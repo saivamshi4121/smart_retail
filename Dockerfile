@@ -4,11 +4,14 @@ FROM php:7.4-apache
 # Set the working directory inside the container
 WORKDIR /var/www/html
 
-# Copy the current directory contents into the container at /var/www/html
-COPY . .
+# Install required PHP extensions
+RUN docker-php-ext-install mysqli && docker-php-ext-enable mysqli
 
-# Enable apache mod_rewrite (if needed)
+# Enable Apache mod_rewrite
 RUN a2enmod rewrite
+
+# Copy the current directory contents into the container
+COPY . .
 
 # Expose port 80
 EXPOSE 80
